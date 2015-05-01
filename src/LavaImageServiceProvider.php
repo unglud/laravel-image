@@ -1,6 +1,7 @@
 <?php namespace Unglued\LavaImage;
 
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageManagerStatic as ImageManager;
 
 class LavaImageServiceProvider extends ServiceProvider {
 
@@ -22,7 +23,7 @@ class LavaImageServiceProvider extends ServiceProvider {
 	public function register()
 	{
         $this->app->bind('lavaimage', function(){
-            return new LavaImage();
+            return new LavaImage(new ImageManager);
         });
 	}
 
