@@ -1,7 +1,7 @@
 <?php namespace Unglued\LavaImage;
 
 use Illuminate\Support\ServiceProvider;
-use Intervention\Image\ImageManagerStatic as ImageManager;
+use Intervention\Image\ImageManager;
 
 class LavaImageServiceProvider extends ServiceProvider {
 

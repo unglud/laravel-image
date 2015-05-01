@@ -9,8 +9,9 @@
  */
 
 namespace Unglued\LavaImage;
-use Intervention\Image\ImageManagerStatic as ImageManager;
+
 use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\ImageManager;
 
 class LavaImage {
 
@@ -32,8 +33,8 @@ class LavaImage {
         $this->pathUrl = '/uploads/';
         $this->path = public_path() . $this->pathUrl;
 
-        $this->depth = $this->app['config']->get('lavaimage.depth', 2);
-        $this->len = $this->app['config']->get('lavaimage.len', 1);
+        $this->depth = app('config')->get('lavaimage.depth', 2);
+        $this->len = app('config')->get('lavaimage.len', 1);
     }
 
     public function save($data, $size = []){
@@ -64,35 +65,6 @@ class LavaImage {
         return $this->hash;
     }
 
-    public function getImageCode(){
-        return $this->hash;
-    }
-
-
-    public function getImage($hash, $server = false){
-        $dir = $this->resolvePath($hash);
-
-        $imgPath = glob(public_path() . '/uploads/' . $dir . $hash . '.*');
-        if(!isset($imgPath[0]))
-            return false;
-
-        if($server)
-            return $imgPath[0];
-
-        return url(str_replace(public_path(), '', $imgPath[0]));
-
-    }
-
-    protected function resolvePath($hash){
-        $dir = '';
-        for($i = 0, $j = 0; $i < $this->depth; $i++, $j += $this->len){
-            $dir .= substr($hash, $j, $this->len) . '/';
-        }
-
-        return $dir;
-    }
-
-
     protected function generatePath(){
         while(true){
             $fileName = hash('crc32', md5(rand()));
@@ -111,6 +83,33 @@ class LavaImage {
             return $file;
         }
         return false;
+    }
+
+    protected function resolvePath($hash){
+        $dir = '';
+        for($i = 0, $j = 0; $i < $this->depth; $i++, $j += $this->len){
+            $dir .= substr($hash, $j, $this->len) . '/';
+        }
+
+        return $dir;
+    }
+
+    public function getImageCode(){
+        return $this->hash;
+    }
+
+    public function getImage($hash, $server = false){
+        $dir = $this->resolvePath($hash);
+
+        $imgPath = glob(public_path() . '/uploads/' . $dir . $hash . '.*');
+        if(!isset($imgPath[0]))
+            return false;
+
+        if($server)
+            return $imgPath[0];
+
+        return url(str_replace(public_path(), '', $imgPath[0]));
+
     }
 
 
