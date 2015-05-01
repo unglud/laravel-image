@@ -13,7 +13,15 @@ namespace Unglued\LavaImage;
 
 class LavaImage {
 
+
     function __construct(){
-        dd('hello');
+        //dd('hello');
     }
+
+
+    public function yelp(){
+        return '1234';
+    }
+
+
 }
