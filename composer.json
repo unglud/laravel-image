@@ -1,12 +1,17 @@
 {
   "name": "unglud/laravel-image",
-    "description": "Basic image saver",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Aleksandr Matrosov",
-            "email": "unglud@gmail.com"
-        }
-    ],
-    "require": {}
+  "description": "Basic image saver",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Aleksandr Matrosov",
+      "email": "unglud@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Unglued\\LavaImage\\": "src/"
+    }
+  },
+  "require": {}
 }
