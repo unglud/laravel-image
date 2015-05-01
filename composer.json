@@ -13,5 +13,7 @@
       "Unglued\\LavaImage\\": "src/"
     }
   },
-  "require": {}
+  "require": {
+    "intervention/image": "~2"
+  }
 }
