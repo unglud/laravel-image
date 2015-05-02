@@ -9,7 +9,7 @@ If you need save uploaded image to some place and to database, best way to do it
 Laravel Image is distributed as a composer package. So you first have to add the package to your `composer.json` file:
 
 ```
-"unglud/laravel-image": "~0.1"
+"unglud/laravel-image": "~1"
 ```
 
 Then you have to run `composer update` to install the package and it dependencies if needed. Once this is completed, you have to add the service provider to the providers array in `config/app.php`:
