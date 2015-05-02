@@ -2,6 +2,8 @@
 Basic image saver for Laravel 5.
 If you need save uploaded image to some place and to database, best way to do it, save image in public folder with unique name and then save that name to database. So this package will do it for you.
 
+[![Build Status](https://travis-ci.org/unglud/laravel-image.svg?branch=master)](https://travis-ci.org/unglud/laravel-image)
+
 ## Installation
 
 Laravel Image is distributed as a composer package. So you first have to add the package to your `composer.json` file:

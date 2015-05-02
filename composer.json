@@ -1,6 +1,13 @@
 {
   "name": "unglud/laravel-image",
-  "description": "Basic image saver",
+  "description": "Basic image saver for Laravel 5",
+  "keywords": [
+    "laravel",
+    "image",
+    "upload",
+    "file",
+    "save"
+  ],
   "license": "MIT",
   "authors": [
     {
@@ -14,6 +21,10 @@
     }
   },
   "require": {
-    "intervention/image": "~2"
+    "intervention/image": "~2",
+    "illuminate/support": "^5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.6"
   }
 }
