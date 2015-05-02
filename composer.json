@@ -25,6 +25,7 @@
     "illuminate/support": "^5.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.6"
+    "phpunit/phpunit": "^4.6",
+    "mockery/mockery": "^0.9.4"
   }
 }
