@@ -1,15 +1,25 @@
 # laravel-image
 Basic image saver for Laravel 5.
-If you need save uploaded image to some place and to database, best way to do it, save image in public folder with unique name and then save that name to database. So this package will do it for you.
 
+If you need save uploaded image to some place and to database, then best way to do it save image in public folder with unique name and then save that name to database.
+
+So this package will do it for you.
+
+[![GitHub release](https://img.shields.io/github/release/unglud/laravel-image.svg)](https://github.com/unglud/laravel-image/releases)
 [![Build Status](https://travis-ci.org/unglud/laravel-image.svg?branch=master)](https://travis-ci.org/unglud/laravel-image)
+[![License](https://img.shields.io/packagist/l/unglud/laravel-image.svg)](https://github.com/unglud/laravel-image/blob/master/LICENSE)
+[![Total Downloads](https://img.shields.io/packagist/dt/unglud/laravel-image.svg)](https://packagist.org/packages/unglud/laravel-image)
 
 ## Installation
 
 Laravel Image is distributed as a composer package. So you first have to add the package to your `composer.json` file:
 
 ```
-"unglud/laravel-image": "~1"
+{
+    "require": {
+        "unglud/laravel-image": "~1"
+    }
+}
 ```
 
 Then you have to run `composer update` to install the package and it dependencies if needed. Once this is completed, you have to add the service provider to the providers array in `config/app.php`:
@@ -22,7 +32,7 @@ Run php artisan vendor:publish to publish this package configuration. Afterwards
 
 ## Saving Image
 
-Use `LavaImage::save()` to save image to `public/uploads`, this method generate unique 8 char filename and put file to deep tree folder structure.
+Use `LavaImage::save()` to save image to `public/uploads`, this method generate unique 8 char filename and put file to [deep tree folder structure](http://serverfault.com/a/95454).
 
 ```php
 use Unglued\LavaImage\Facades\LavaImage;
@@ -57,19 +67,19 @@ LavaImage::save('http://lorempixel.com/300/300/', [100,100]);
 As first argument you can pass any data, what [Intervention/image make method](http://image.intervention.io/api/make) support
 
 ```php
-// create a new image resource from file
+// save image from file
 LavaImage::save('public/foo.jpg');
 
-// or create a new image resource from binary data
+// or save image from binary data
 LavaImage::save(file_get_contents('public/foo.jpg'));
 
-// create a new image from gd resource
+// save image from gd resource
 LavaImage::save(imagecreatefromjpeg('public/foo.jpg'));
 
-// create a new image directly from an url
+// save image directly from an url
 LavaImage::save('http://example.com/example.jpg');
 
-// create a new image directly from Laravel file upload
+// save image directly from Laravel file upload
 LavaImage::save(Input::file('photo'));
 ```
 
