@@ -1,7 +1,7 @@
 # laravel-image
 Basic image saver for Laravel 5.
 
-If you need save uploaded image to some place and to database, then best way to do it save image in public folder with unique name and then save that name to database.
+If you need save uploaded image to some place and to a database, the best way to do that is to save an image in public folder with the unique name and then save that name to the database.
 
 So this package will do it for you.
 
@@ -12,14 +12,9 @@ So this package will do it for you.
 
 ## Installation
 
-Laravel Image is distributed as a composer package. So you first have to add the package to your `composer.json` file:
-
+Laravel Image is distributed as a composer package:
 ```
-{
-    "require": {
-        "unglud/laravel-image": "~1"
-    }
-}
+composer require unglud/laravel-image
 ```
 
 Then you have to run `composer update` to install the package and it dependencies if needed. Once this is completed, you have to add the service provider to the providers array in `config/app.php`:
@@ -28,7 +23,7 @@ Then you have to run `composer update` to install the package and it dependencie
 'Unglued\LavaImage\LavaImageServiceProvider',
 ```
 
-Run php artisan vendor:publish to publish this package configuration. Afterwards you can edit the file `config/lavaimage.php`.
+Run `php artisan vendor:publish` to publish this package configuration. Afterward, you can edit the file `config/lavaimage.php`.
 
 ## Saving Image
 
@@ -47,6 +42,7 @@ $myModel->image = $fileHash;
 $myModel->save();
 ```
 
+### File structure
 You can specify another folder structure, like any depth or folder name length
 
 ```
@@ -58,13 +54,14 @@ for 203bad62 it can be
 etc....
 ```
 
+### Crop and save
 You can specify size as second argument for center fit cropping
 
 ```php
 LavaImage::save('http://lorempixel.com/300/300/', [100,100]);
 ```
 
-As first argument you can pass any data, what [Intervention/image make method](http://image.intervention.io/api/make) support
+As the first argument, you can pass any data, what [Intervention/image make method](http://image.intervention.io/api/make) support
 
 ```php
 // save image from file
@@ -87,10 +84,11 @@ Any time after saving you can retrieve generated hash by `LavaImage::getImageCod
 
 ## Getting Image
 
-If you need get image, use hash you know
+Then you need to get an image, use hash you know
 
 ```php
 // for http path (http://example.com/uploads/2/0/203bad62.jpg)
+$hash = '203bad62'
 LavaImage::getImage($hash);
 
 // for absolute path (/home/var/laravel/public/uploads/2/0/203bad62.jpg)
