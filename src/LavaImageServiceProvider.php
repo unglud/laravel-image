@@ -12,7 +12,9 @@ class LavaImageServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+        $this->publishes([
+            __DIR__.'/config/lavaimage.php' => config_path('lavaimage.php')
+        ]);
 	}
 
 	/**

@@ -17,14 +17,6 @@ Laravel Image is distributed as a composer package:
 composer require unglud/laravel-image
 ```
 
-Then you have to run `composer update` to install the package and it dependencies if needed. Once this is completed, you have to add the service provider to the providers array in `config/app.php`:
-
-```
-'Unglued\LavaImage\LavaImageServiceProvider',
-```
-
-Run `php artisan vendor:publish` to publish this package configuration. Afterward, you can edit the file `config/lavaimage.php`.
-
 ## Saving Image
 
 Use `LavaImage::save()` to save image to `public/uploads`, this method generate unique 8 char filename and put file to [deep tree folder structure](http://serverfault.com/a/95454).
@@ -37,13 +29,14 @@ $fileHash = LavaImage::save('http://lorempixel.com/300/300/');
 // $fileHash == 203bad62
 // and file stored in /public/uploads/2/0/203bad62.jpg
 
+// now you can save hash to file in your storage
 $myModel = new MyModel();
 $myModel->image = $fileHash;
 $myModel->save();
 ```
 
 ### File structure
-You can specify another folder structure, like any depth or folder name length
+You can specify another folder structure, like any depth or folder name length in the config file
 
 ```
 for 203bad62 it can be
@@ -87,12 +80,13 @@ Any time after saving you can retrieve generated hash by `LavaImage::getImageCod
 Then you need to get an image, use hash you know
 
 ```php
-// for http path (http://example.com/uploads/2/0/203bad62.jpg)
 $hash = '203bad62'
 LavaImage::getImage($hash);
+// will return http://example.com/uploads/2/0/203bad62.jpg
 
-// for absolute path (/home/var/laravel/public/uploads/2/0/203bad62.jpg)
-LavaImage::getImage(LavaImage::getImageCode(), true)
+LavaImage::getImage($hash, true);
+// will return absolute path /home/var/laravel/public/uploads/2/0/203bad62.jpg
+
 ```
 
 

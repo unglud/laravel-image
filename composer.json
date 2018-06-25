@@ -27,5 +27,15 @@
   "require-dev": {
     "phpunit/phpunit": "^4.6",
     "mockery/mockery": "^0.9.4"
-  }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Unglued\\LavaImage\\LavaImageServiceProvider"
+      ]
+    },
+    "aliases": {
+      "LavaImage": "Unglued\\LavaImage\\Facades\\LavaImage"
+    }
+  },
 }
