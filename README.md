@@ -17,6 +17,12 @@ Laravel Image is distributed as a composer package:
 composer require unglud/laravel-image
 ```
 
+If you want to change configs later, please publish config file first:
+```
+php artisan vendor:publish
+```
+Afterward, you can edit the file `config/lavaimage.php`.
+
 ## Saving Image
 
 Use `LavaImage::save()` to save image to `public/uploads`, this method generate unique 8 char filename and put file to [deep tree folder structure](http://serverfault.com/a/95454).
