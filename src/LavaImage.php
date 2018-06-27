@@ -15,7 +15,8 @@ use Intervention\Image\ImageManager;
  * Class LavaImage
  * @package Unglued\LavaImage
  */
-class LavaImage {
+class LavaImage
+{
 
     /**
      * @var ImageManager
@@ -23,16 +24,17 @@ class LavaImage {
     protected $imageManager;
     protected $path;
     protected $pathUrl;
-    private $hash;
     protected $depth;
     protected $len;
     protected $type;
+    private $hash;
 
     /**
      * LavaImage constructor.
      * @param ImageManager $imageManager
      */
-    public function __construct(ImageManager $imageManager){
+    public function __construct(ImageManager $imageManager)
+    {
 
         $this->imageManager = $imageManager;
 
@@ -48,14 +50,15 @@ class LavaImage {
      * @param array $size
      * @return mixed
      */
-    public function save($data, $size = []){
+    public function save($data, $size = [])
+    {
         try {
             $img = $this->imageManager->make($data);
-        } catch(NotReadableException $e) {
+        } catch (NotReadableException $e) {
             $img = $this->imageManager->make(public_path() . '/images/noimage.jpg');
         }
 
-        switch($img->mime()) {
+        switch ($img->mime()) {
             case 'image/png':
                 $this->type = 'png';
                 break;
@@ -68,30 +71,59 @@ class LavaImage {
                 $this->type = 'jpg';
         }
 
-        if(!empty($size))
+        if (!empty($size)) {
             $img->fit($size[0], $size[1])->save($this->generatePath());
-        else
+        } else {
             $img->save($this->generatePath());
+        }
 
         return $this->hash;
+    }
+
+    public function getImageCode()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param $hash
+     * @param bool $server
+     * @return bool|string
+     */
+    public function getImage($hash, $server = false)
+    {
+        $dir = $this->resolvePath($hash);
+
+        $imgPath = File::glob(public_path() . '/uploads/' . $dir . $hash . '.*');
+        if (!isset($imgPath[0])) {
+            return false;
+        }
+
+        if ($server) {
+            return $imgPath[0];
+        }
+
+        return url(str_replace(public_path(), '', $imgPath[0]));
+
     }
 
     /**
      * @return bool|string
      */
-    protected function generatePath(){
-        while(true){
+    protected function generatePath()
+    {
+        while (true) {
             $fileName = $this->getHash();
 
             $this->hash = $fileName;
 
             $dir = $this->resolvePath($fileName);
-
-            File::makeDirectory($this->path . $dir);
+            File::makeDirectory($this->path . $dir, 0755, true);
 
             $file = $this->path . $dir . $fileName . '.' . $this->type;
-            if(file_exists($file))
+            if (file_exists($file)) {
                 continue;
+            }
 
             return $file;
         }
@@ -103,36 +135,14 @@ class LavaImage {
      * @param $hash
      * @return string
      */
-    protected function resolvePath($hash){
+    protected function resolvePath($hash)
+    {
         $dir = '';
-        for($i = 0, $j = 0; $i < $this->depth; $i++, $j += $this->len){
+        for ($i = 0, $j = 0; $i < $this->depth; $i++, $j += $this->len) {
             $dir .= substr($hash, $j, $this->len) . '/';
         }
 
         return $dir;
-    }
-
-    public function getImageCode(){
-        return $this->hash;
-    }
-
-    /**
-     * @param $hash
-     * @param bool $server
-     * @return bool|string
-     */
-    public function getImage($hash, $server = false){
-        $dir = $this->resolvePath($hash);
-
-        $imgPath = File::glob(public_path() . '/uploads/' . $dir . $hash . '.*');
-        if(!isset($imgPath[0]))
-            return false;
-
-        if($server)
-            return $imgPath[0];
-
-        return url(str_replace(public_path(), '', $imgPath[0]));
-
     }
 
     /**
@@ -140,6 +150,6 @@ class LavaImage {
      */
     protected function getHash()
     {
-        return hash('crc32', md5(mt_rand()));
+        return hash('crc32', md5((string) mt_rand()));
     }
 }

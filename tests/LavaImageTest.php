@@ -78,7 +78,7 @@ class LavaImageTest extends TestCase
 
     function test_it_must_return_absolute_path_by_code(){
         $img = $this->getImg();
-
+        File::shouldReceive('glob')->andReturn(['/some/path/public/uploads/7/9/796aef28.jpg']);
         $path = $img->getImage('796aef28', true);
 
         $this->assertEquals('/some/path/public/uploads/7/9/796aef28.jpg', $path);
@@ -86,6 +86,7 @@ class LavaImageTest extends TestCase
 
     protected function tearDown(){
         \Mockery::close();
+        File::clearResolvedInstances();
     }
 
 }
