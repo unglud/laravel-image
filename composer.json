@@ -20,12 +20,18 @@
       "Unglued\\LavaImage\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "require": {
+    "php": "^7.1",
     "intervention/image": "~2",
     "illuminate/support": "^5.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.6",
+    "phpunit/phpunit": "^7.0",
     "mockery/mockery": "^0.9.4"
   },
   "extra": {

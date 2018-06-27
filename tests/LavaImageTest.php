@@ -1,43 +1,21 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Created by Alexander 'unglued' Matrosov.
- * Company: Apus Agency
- * Site: http://www.apus.ag
- * E-mail: alex@apus.ag
  * Date: 03/05/15
- * Copyright (c) 2006-2015 Apus Agency
  */
-namespace Unglued\LavaImage;
 
+namespace Tests;
 
-function public_path(){
-    return '/some/path/public';
-}
+use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\TestCase;
+use Unglued\LavaImage\LavaImage;
 
-function app(){
-    $mock = \Mockery::mock('AppObject');
-    $mock->shouldReceive('get')->with('lavaimage.depth', 2)->andReturn(2);
-    $mock->shouldReceive('get')->with('lavaimage.len', 1)->andReturn(1);
-    return $mock;
-}
+require_once __DIR__ . '/functions.php';
 
-function hash($alg, $data){
-    return '796aef28';
-}
-
-function mkdir($path){ }
-
-function glob($path){
-    return [str_replace('*', 'jpg', $path)];
-}
-
-function url($path){
-    return 'http://example.com' . $path;
-}
-
-
-class LavaImageTest extends \PHPUnit_Framework_TestCase {
+class LavaImageTest extends TestCase
+{
 
     private $manager;
 
@@ -51,24 +29,26 @@ class LavaImageTest extends \PHPUnit_Framework_TestCase {
         $this->assertObjectHasAttribute('imageManager', $img);
 
         $this->assertObjectHasAttribute('pathUrl', $img);
-        $this->assertEquals('/uploads/', \PHPUnit_Framework_Assert::readAttribute($img, 'pathUrl'));
+        $this->assertAttributeContains('/uploads/', 'pathUrl', $img);
 
         $this->assertObjectHasAttribute('path', $img);
-        $this->assertEquals('/some/path/public/uploads/', \PHPUnit_Framework_Assert::readAttribute($img, 'path'));
+        $this->assertAttributeContains('/some/path/public/uploads/', 'path', $img);
 
         $this->assertObjectHasAttribute('depth', $img);
-        $this->assertEquals(2, \PHPUnit_Framework_Assert::readAttribute($img, 'depth'));
+        $this->assertEquals(2, $this->readAttribute($img, 'depth'));
 
         $this->assertObjectHasAttribute('len', $img);
-        $this->assertEquals(1, \PHPUnit_Framework_Assert::readAttribute($img, 'len'));
+        $this->assertEquals(1, $this->readAttribute($img, 'len'));
     }
 
     function getImg(){
-        return new LavaImage($this->manager);
+        return new LavaImageStub($this->manager);
     }
 
     function test_it_must_generate_path(){
         $img = $this->getImg();
+
+        File::shouldReceive('makeDirectory');
 
         $managerImage = \Mockery::mock('ManagerImage');
         $managerImage->shouldReceive('mime')->andReturn('image/jpg');
@@ -83,12 +63,13 @@ class LavaImageTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('796aef28', $img->getImageCode());
 
         $this->assertObjectHasAttribute('type', $img);
-        $this->assertEquals('jpg', \PHPUnit_Framework_Assert::readAttribute($img, 'type'));
+        $this->assertAttributeContains('jpg', 'type', $img);
 
     }
 
     function test_it_must_return_http_path_by_code(){
         $img = $this->getImg();
+        File::shouldReceive('glob')->andReturn(['/uploads/7/9/796aef28.jpg']);
 
         $path = $img->getImage('796aef28');
 
@@ -107,6 +88,13 @@ class LavaImageTest extends \PHPUnit_Framework_TestCase {
         \Mockery::close();
     }
 
+}
 
+class LavaImageStub extends LavaImage
+{
+    protected function getHash()
+    {
+        return '796aef28';
+    }
 
 }
