@@ -1,4 +1,7 @@
-<?php namespace Unglued\LavaImage\Facades;
+<?php
+declare(strict_types=1);
+
+namespace Unglued\LavaImage\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -8,5 +11,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static getImage($hash, $server = false)
  */
 class LavaImage extends Facade{
-    protected static function getFacadeAccessor() { return 'lavaimage'; }
+    /**
+     * {@inheritDoc}
+     */
+    protected static function getFacadeAccessor(): string { return 'lavaimage'; }
 }

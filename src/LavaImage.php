@@ -50,7 +50,7 @@ class LavaImage
      * @param array $size
      * @return mixed
      */
-    public function save($data, $size = [])
+    public function save($data, array $size = []): string
     {
         try {
             $img = $this->imageManager->make($data);
@@ -71,13 +71,16 @@ class LavaImage
                 $this->type = 'jpg';
         }
 
+        $fileName = $this->getHash();
+        $this->hash = $fileName;
+
         if (!empty($size)) {
-            $img->fit($size[0], $size[1])->save($this->generatePath());
+            $img->fit($size[0], $size[1])->save($this->generatePath($fileName));
         } else {
-            $img->save($this->generatePath());
+            $img->save($this->generatePath($fileName));
         }
 
-        return $this->hash;
+        return $fileName;
     }
 
     public function getImageCode()
@@ -108,15 +111,12 @@ class LavaImage
     }
 
     /**
-     * @return bool|string
+     * @param string $fileName
+     * @return null|string
      */
-    protected function generatePath()
+    protected function generatePath(string $fileName): ?string
     {
         while (true) {
-            $fileName = $this->getHash();
-
-            $this->hash = $fileName;
-
             $dir = $this->resolvePath($fileName);
             File::makeDirectory($this->path . $dir, 0755, true);
 
@@ -128,14 +128,14 @@ class LavaImage
             return $file;
         }
 
-        return false;
+        return null;
     }
 
     /**
      * @param $hash
      * @return string
      */
-    protected function resolvePath($hash)
+    protected function resolvePath($hash): string
     {
         $dir = '';
         for ($i = 0, $j = 0; $i < $this->depth; $i++, $j += $this->len) {
@@ -148,7 +148,7 @@ class LavaImage
     /**
      * @return string
      */
-    protected function getHash()
+    protected function getHash(): string
     {
         return hash('crc32', md5((string) mt_rand()));
     }

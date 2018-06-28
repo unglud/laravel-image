@@ -93,7 +93,7 @@ class LavaImageTest extends TestCase
 
 class LavaImageStub extends LavaImage
 {
-    protected function getHash()
+    protected function getHash(): string
     {
         return '796aef28';
     }
